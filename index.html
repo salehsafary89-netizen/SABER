@@ -1,447 +1,1331 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#0a0812">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="منچ رابطه‌ای">
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/svg+xml" href="./icon.svg">
-<title>منچ رابطه‌ای</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
-:root{
-  --bg:#0a0812;
-  --panel:#14101c;
-  --panel2:#1c1628;
-  --line:#2e2640;
-  --text:#f4f0fa;
-  --muted:#9a90a8;
-  --pink:#ff5a9a;
-  --pink-soft:#ff5a9a28;
-  --gold:#f0c675;
-  --gold-dim:#f0c67522;
-  --blue:#7aa8ff;
-  --violet:#a78bfa;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(ellipse at 70% -10%, #2a1535 0%, transparent 45%),
-    radial-gradient(ellipse at 20% 100%, #151028 0%, transparent 40%),
-    #0a0812;
-  color:var(--text);
-  font-family:'Vazirmatn',Tahoma,sans-serif;
-  overflow-x:hidden;
-}
-button{font:inherit;color:inherit;cursor:pointer;border:none;outline:none}
-.screen{display:none;min-height:100vh;width:min(480px,100%);margin:0 auto;padding:24px 18px;flex-direction:column}
-.screen.active{display:flex}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1b5e20" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="سامانه طریق" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon-tariq.svg" />
+  <link rel="apple-touch-icon" href="icon-tariq.svg" />
+  <title>سامانه طریق (پایا) | مدیریت پایگاه دانش‌آموزی بسیج</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f3f7f4;
+      --panel: #ffffff;
+      --panel2: #eef4ef;
+      --border: #cfd9d1;
+      --text: #14301a;
+      --muted: #5b6f60;
+      --accent: #1b5e20;
+      --accent2: #2e7d32;
+      --accent3: #43a047;
+      --warn: #ef6c00;
+      --danger: #c62828;
+      --info: #1565c0;
+      --radius: 14px;
+      --shadow: 0 6px 20px rgba(27,94,32,.08);
+      --font: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: var(--font);
+      background: linear-gradient(165deg, #e8f5e9 0%, #f3f7f4 40%, #ffffff 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    button, input, select, textarea { font-family: inherit; font-size: 14px; }
+    .hidden { display: none !important; }
 
-/* License */
-#license-screen{justify-content:center;align-items:center;text-align:center;gap:28px}
-.logo-big{
-  font-size:2.5em;font-weight:800;letter-spacing:-1px;
-  background:linear-gradient(135deg,#ff5a9a 10%,#f0c675 50%,#a78bfa 90%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px #ff5a9a33);
-}
-.logo-sub{color:var(--muted);font-size:.95em;margin-top:-14px}
-.license-box{
-  width:100%;background:linear-gradient(160deg,var(--panel),var(--panel2));
-  border:1px solid var(--line);border-radius:18px;padding:28px 22px;
-  box-shadow:0 24px 60px #0008, inset 0 1px 0 #ffffff08;
-}
-.license-box label{display:block;font-size:.9em;color:var(--muted);margin-bottom:10px;text-align:right}
-.license-box input{
-  width:100%;padding:16px;border-radius:12px;border:1.5px solid var(--line);
-  background:#0c0a12;color:var(--text);font-size:1.25em;text-align:center;
-  letter-spacing:4px;font-family:inherit;transition:border-color .2s,box-shadow .2s;
-}
-.license-box input:focus{border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft);outline:none}
-.license-box input.error{border-color:#ff4d6a;animation:shake-x .4s ease}
-@keyframes shake-x{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.btn-main{
-  width:100%;margin-top:18px;padding:16px;border-radius:12px;
-  background:linear-gradient(135deg,#ff5a9a,#e8894a);
-  color:#fff;font-weight:700;font-size:1.1em;
-  box-shadow:0 10px 28px #ff5a9a40;
-  transition:transform .15s,box-shadow .15s;
-}
-.btn-main:active{transform:scale(.97)}
-.license-error{color:#ff7a9a;font-size:.85em;margin-top:12px;min-height:20px}
+    /* ===== Login / Backup gate ===== */
+    .gate {
+      position: fixed; inset: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at 30% 20%, #c8e6c9, #f3f7f4 55%, #fff);
+    }
+    .gate-card {
+      width: min(460px, 96vw);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(27,94,32,.15);
+      overflow: hidden;
+    }
+    .gate-top {
+      text-align: center;
+      padding: 28px 24px 18px;
+      background: linear-gradient(180deg, #e8f5e9, #fff);
+      border-bottom: 1px solid var(--border);
+    }
+    .gate-top img { width: 72px; height: 72px; margin-bottom: 10px; }
+    .gate-top h1 { font-size: 22px; margin-bottom: 4px; }
+    .gate-top p { color: var(--muted); font-size: 12px; }
+    .gate-body { padding: 20px 22px 24px; }
+    .gate-step { margin-bottom: 14px; }
+    .gate-step h3 { font-size: 14px; margin-bottom: 6px; }
+    .gate-step p { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.8; }
+    .gate-actions { display: flex; flex-direction: column; gap: 8px; }
+    .backup-status {
+      font-size: 12px; color: var(--muted);
+      background: var(--panel2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 12px; margin-top: 10px; line-height: 1.8;
+    }
+    .backup-status b { color: var(--accent); }
 
-/* Setup */
-#setup-screen h2{
-  text-align:center;font-size:1.5em;margin-bottom:8px;
-  background:linear-gradient(135deg,#ff5a9a,#f0c675);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.setup-sub{text-align:center;color:var(--muted);font-size:.9em;margin-bottom:28px}
-.setup-card{
-  background:linear-gradient(160deg,var(--panel),var(--panel2));
-  border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;
-}
-.setup-card .title{font-size:.95em;color:var(--muted);margin-bottom:12px}
-.setup-card input{
-  width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid var(--line);
-  background:#0c0a12;color:var(--text);font-size:1.05em;font-family:inherit;margin-bottom:14px;
-}
-.setup-card input:focus{border-color:var(--pink);outline:none}
-.gender-row{display:flex;gap:10px}
-.gender-btn{
-  flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--line);
-  background:#0c0a12;color:var(--muted);font-weight:600;transition:.2s;
-}
-.gender-btn.selected-girl{border-color:var(--pink);background:var(--pink-soft);color:var(--pink)}
-.gender-btn.selected-boy{border-color:var(--blue);background:#7aa8ff22;color:var(--blue)}
+    /* ===== App layout ===== */
+    .app { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+    .sidebar {
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      padding: 16px 12px;
+      display: flex; flex-direction: column; gap: 3px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      box-shadow: -4px 0 20px rgba(27,94,32,.04);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      padding: 4px 6px 14px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
+    }
+    .brand-logo {
+      width: 48px; height: 48px; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); background: #e8f5e9; flex: none;
+    }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand h1 { font-size: 17px; color: var(--accent); }
+    .brand p { font-size: 11px; color: var(--muted); }
 
-/* Game */
-.game-header{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--line);
-}
-.game-header .brand{
-  font-weight:800;font-size:1.15em;
-  background:linear-gradient(135deg,#ff5a9a,#f0c675);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.game-header .badge{
-  font-size:11px;color:var(--gold);border:1px solid #5a4a30;
-  background:var(--gold-dim);padding:5px 12px;border-radius:20px;
-}
-.players{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.player-card{
-  background:linear-gradient(160deg,var(--panel),var(--panel2));
-  border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;
-  text-align:center;transition:.25s;
-}
-.player-card.active{
-  border-color:var(--pink);
-  box-shadow:0 0 0 1px var(--pink),0 0 28px #ff5a9a30;
-}
-.player-card .name{font-size:.95em;font-weight:600;margin-bottom:4px}
-.player-card .gender-tag{font-size:11px;color:var(--muted);margin-bottom:8px}
-.player-card .pos{font-size:1.9em;font-weight:800;color:var(--pink)}
-.player-card .pos-label{font-size:11px;color:var(--muted)}
+    .nav-label {
+      font-size: 10px; color: var(--muted); padding: 10px 10px 4px;
+      letter-spacing: .3px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      color: var(--muted); cursor: pointer; transition: .15s;
+      border: none; background: transparent; width: 100%; text-align: right;
+    }
+    .nav-item:hover { background: var(--panel2); color: var(--text); }
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(27,94,32,.12), transparent);
+      color: var(--accent);
+      border-right: 3px solid var(--accent);
+      font-weight: 700;
+    }
+    .nav-item .icon { width: 20px; text-align: center; }
+    .sidebar-footer {
+      margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.7;
+    }
 
-.board-wrap{
-  background:linear-gradient(160deg,var(--panel),#120e1a);
-  border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:20px;
-  box-shadow:inset 0 1px 0 #ffffff06;
-}
-.board{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
-.cell{
-  aspect-ratio:1;border-radius:5px;background:#100e16;
-  border:1px solid #221c30;display:flex;align-items:center;justify-content:center;
-  font-size:8px;color:#4a4460;position:relative;transition:background .2s,border-color .2s;
-}
-.cell.special{
-  background:linear-gradient(145deg,#1e1430,#16101f);
-  border-color:#4a3060;color:#c8a0d0;font-weight:600;
-}
-.cell.special::after{
-  content:"✦";position:absolute;top:2px;left:3px;font-size:7px;opacity:.55;color:var(--gold);
-}
-.cell.flash{
-  background:#2a1a40!important;border-color:var(--pink)!important;
-  box-shadow:0 0 12px #ff5a9a44;
-}
-.token{
-  width:13px;height:13px;border-radius:50%;position:absolute;z-index:2;
-  box-shadow:0 0 12px currentColor,0 0 4px #fff8;
-  transition:transform .15s ease;
-}
-.token.p0{background:linear-gradient(145deg,#ff7ab0,var(--pink));color:var(--pink)}
-.token.p1{background:linear-gradient(145deg,#9ec0ff,var(--blue));color:var(--blue)}
-.token.bounce{animation:token-bounce .18s ease}
-@keyframes token-bounce{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+    .main { padding: 18px 22px 48px; overflow-x: hidden; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; gap: 12px; flex-wrap: wrap;
+    }
+    .topbar h2 { font-size: 21px; color: var(--accent); }
+    .topbar .sub { color: var(--muted); font-size: 13px; }
+    .top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.dice-section{text-align:center;margin-bottom:16px}
-.turn-text{color:var(--muted);font-size:13px;margin-bottom:14px}
-.dice{
-  width:110px;height:110px;margin:0 auto 16px;border-radius:22px;
-  background:
-    linear-gradient(145deg,#2a2438 0%,#14101c 100%);
-  border:2px solid #4a4060;
-  display:flex;align-items:center;justify-content:center;
-  font-size:52px;font-weight:800;line-height:1;
-  box-shadow:
-    0 16px 40px #000a,
-    inset 0 2px 0 #ffffff12,
-    inset 0 -2px 0 #0006;
-  color:var(--gold);
-  text-shadow:0 0 20px #f0c67555;
-  transition:transform .12s;
-}
-.dice.shake{animation:dice-shake .85s cubic-bezier(.36,.07,.19,.97)}
-@keyframes dice-shake{
-  0%{transform:rotate(0) scale(1)}
-  12%{transform:rotate(-16deg) scale(1.1)}
-  24%{transform:rotate(14deg) scale(1.08)}
-  36%{transform:rotate(-12deg) scale(1.12)}
-  48%{transform:rotate(11deg) scale(1.06)}
-  60%{transform:rotate(-8deg) scale(1.1)}
-  72%{transform:rotate(6deg) scale(1.04)}
-  84%{transform:rotate(-3deg) scale(1.05)}
-  100%{transform:rotate(0) scale(1)}
-}
-.btn-dice{
-  width:100%;padding:16px;border-radius:14px;
-  background:linear-gradient(135deg,#ff5a9a,#e8894a);
-  color:#fff;font-weight:700;font-size:1.12em;
-  box-shadow:0 10px 28px #ff5a9a45;
-  letter-spacing:.5px;
-}
-.btn-dice:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
-.note{text-align:center;color:#5a5470;font-size:11px;line-height:1.65;margin-top:10px}
+    .btn {
+      border: none; border-radius: 10px; padding: 9px 14px;
+      cursor: pointer; font-weight: 700; transition: .15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-ghost { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-danger { background: #ffebee; color: var(--danger); border: 1px solid #ef9a9a; }
+    .btn-sm { padding: 5px 9px; font-size: 12px; }
+    .btn-block { width: 100%; }
 
-/* Overlays */
-.overlay{position:fixed;inset:0;background:#06040add;display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
-.overlay.show{display:flex}
-.scroll{
-  width:min(420px,100%);
-  background:linear-gradient(180deg,#f7eedc,#e6d4b0);
-  color:#1a1510;border-radius:10px;padding:28px 22px;
-  box-shadow:0 28px 70px #000c;transform-origin:top center;
-  max-height:88vh;overflow-y:auto;
-}
-.scroll.open{animation:unroll .8s cubic-bezier(.2,.8,.2,1)}
-@keyframes unroll{0%{transform:scaleY(.06);opacity:.25}65%{transform:scaleY(1.03);opacity:1}100%{transform:scaleY(1)}}
-.scroll .tag{font-size:11px;color:#7a6a50;letter-spacing:1.5px;margin-bottom:8px}
-.scroll h2{font-size:1.28em;margin-bottom:16px;color:#3a2a1a}
-.gender-box{background:rgba(0,0,0,.055);border-radius:8px;padding:13px 14px;margin-bottom:11px;border-right:3px solid transparent}
-.gender-box.girl{border-right-color:#ff5a9a}
-.gender-box.boy{border-right-color:#7aa8ff}
-.gender-box .label{font-size:12px;font-weight:700;margin-bottom:5px}
-.gender-box.girl .label{color:#c43a6a}
-.gender-box.boy .label{color:#3a6ac4}
-.gender-box .text{font-size:14.5px;line-height:1.85}
-.btn-close{width:100%;margin-top:16px;padding:13px;border-radius:8px;background:#1a1510;color:#f5ebd8;font-weight:600}
-.winner-box{
-  width:min(400px,100%);
-  background:linear-gradient(160deg,#1a1525,#0c0a12);
-  border:1px solid #3a3050;border-radius:20px;padding:42px 26px;text-align:center;
-  box-shadow:0 30px 80px #000c;animation:win-in .6s ease;
-}
-@keyframes win-in{from{opacity:0;transform:translateY(28px) scale(.94)}to{opacity:1;transform:none}}
-.winner-box .emoji{font-size:3em;margin-bottom:12px}
-.winner-box h1{
-  font-size:1.65em;margin-bottom:10px;
-  background:linear-gradient(135deg,#ff5a9a,#f0c675);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.winner-box p{color:var(--muted);line-height:1.8;margin-bottom:24px;font-size:.95em}
-.btn-restart{width:100%;padding:14px;border-radius:10px;border:1.5px solid #4a4060;background:transparent;color:var(--text);font-weight:600}
-</style>
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px;
+    }
+    .stat {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    .stat::after {
+      content: ""; position: absolute; left: -20px; bottom: -30px;
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(27,94,32,.06);
+    }
+    .stat .label { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+    .stat .value { font-size: 24px; font-weight: 800; position: relative; z-index: 1; }
+    .stat .delta { font-size: 11px; margin-top: 3px; color: var(--muted); }
+    .stat.green .value { color: var(--accent2); }
+    .stat.red .value { color: var(--danger); }
+    .stat.blue .value { color: var(--info); }
+    .stat.orange .value { color: var(--warn); }
+
+    .grid-2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow);
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+    }
+    .card-header h3 { font-size: 14px; color: var(--accent); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 9px 7px; text-align: right; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 700; font-size: 11px; background: #f7faf7; }
+    tr:hover td { background: rgba(27,94,32,.03); }
+
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+    }
+    .badge-ok { background: #e8f5e9; color: var(--accent); }
+    .badge-warn { background: #fff3e0; color: var(--warn); }
+    .badge-off { background: #eceff1; color: var(--muted); }
+    .badge-info { background: #e3f2fd; color: var(--info); }
+    .badge-in { background: #e8f5e9; color: var(--accent2); }
+    .badge-out { background: #ffebee; color: var(--danger); }
+    .badge-purple { background: #f3e5f5; color: #7b1fa2; }
+
+    .search-bar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .search-bar input, .search-bar select,
+    .form-row input, .form-row select, .form-row textarea {
+      background: #f7faf7; border: 1px solid var(--border); color: var(--text);
+      border-radius: 10px; padding: 9px 11px; outline: none;
+    }
+    .search-bar input:focus, .form-row input:focus,
+    .form-row select:focus, .form-row textarea:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(46,125,50,.12); }
+    .search-bar input { flex: 1; min-width: 160px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .form-row { display: flex; flex-direction: column; gap: 4px; }
+    .form-row label { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .form-row.full { grid-column: 1 / -1; }
+    .form-actions { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+    .empty { text-align: center; padding: 32px 16px; color: var(--muted); }
+
+    .toast {
+      position: fixed; bottom: 22px; left: 22px;
+      background: #fff; border: 1px solid var(--accent2);
+      color: var(--text); padding: 11px 16px; border-radius: 12px;
+      box-shadow: var(--shadow); opacity: 0; transform: translateY(10px);
+      transition: .25s; z-index: 400; pointer-events: none; font-size: 13px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .notice {
+      background: #e8f5e9; border: 1px solid #a5d6a7;
+      color: #1b5e20; padding: 10px 14px; border-radius: 12px;
+      font-size: 12px; margin-bottom: 14px; line-height: 1.8;
+    }
+    .money-pos { color: var(--accent2); font-weight: 800; }
+    .money-neg { color: var(--danger); font-weight: 800; }
+
+    .bar-track {
+      height: 8px; background: #e8f0ea; border-radius: 99px; overflow: hidden; margin-top: 6px;
+    }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent3)); border-radius: 99px; }
+
+    .confirm-box {
+      background: #fff8e1; border: 1px solid #ffe082; border-radius: 12px;
+      padding: 12px; font-size: 12px; color: #6d4c00; margin-bottom: 12px; line-height: 1.8;
+    }
+
+    @media (max-width: 1000px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative; height: auto; flex-direction: row; flex-wrap: wrap;
+        border-left: none; border-bottom: 1px solid var(--border);
+      }
+      .brand, .nav-label, .sidebar-footer { width: 100%; }
+      .nav-item { width: auto; flex: 1; min-width: 110px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<div id="license-screen" class="screen active">
-  <div class="logo-big">منچ رابطه‌ای</div>
-  <div class="logo-sub">نسخه خصوصی • مثبت ۱۸</div>
-  <div class="license-box">
-    <label>کد لایسنس را وارد کنید</label>
-    <input type="text" id="licenseInput" placeholder="••••••••••" autocomplete="off" inputmode="numeric">
-    <button class="btn-main" id="licenseBtn">ورود به بازی</button>
-    <div class="license-error" id="licenseError"></div>
-  </div>
-</div>
-<div id="setup-screen" class="screen">
-  <h2>آماده‌سازی بازیکنان</h2>
-  <div class="setup-sub">اسم و جنسیت هر نفر را مشخص کنید</div>
-  <div class="setup-card">
-    <div class="title">بازیکن ۱</div>
-    <input type="text" id="name1" placeholder="اسم بازیکن ۱" value="بازیکن ۱">
-    <div class="gender-row">
-      <button class="gender-btn selected-girl" data-player="0" data-gender="girl">دختر</button>
-      <button class="gender-btn" data-player="0" data-gender="boy">پسر</button>
+  <!-- ===== GATE: backup-first entry ===== -->
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <div class="gate-top">
+        <img src="icon-tariq.svg" alt="طریق" />
+        <h1>سامانه طریق · پایا</h1>
+        <p>مدیریت پایگاه دانش‌آموزی بسیج · ویندوز و اندروید</p>
+      </div>
+      <div class="gate-body">
+        <div class="gate-step">
+          <h3>۱) فایل پشتیبان یکپارچه</h3>
+          <p>
+            همه اطلاعات در <b>یک فایل JSON</b> ذخیره می‌شود و هر بار همان فایل به‌روز می‌گردد
+            (نه ده‌ها فایل جدا). با همین فایل می‌توانید روی هر دستگاه از صفر ادامه دهید
+            یا گزارش لحظه‌ای به فرماندهی بدهید.
+          </p>
+          <div class="gate-actions">
+            <button class="btn btn-primary btn-block" type="button" onclick="pickBackupLoad()">📂 انتخاب / بارگذاری فایل پشتیبان</button>
+            <button class="btn btn-ghost btn-block" type="button" onclick="startFresh()">✨ شروع تازه (بدون پشتیبان قبلی)</button>
+          </div>
+          <div id="gatePreview" class="confirm-box hidden"></div>
+          <div class="gate-actions" style="margin-top:8px">
+            <button id="btnConfirmLoad" class="btn btn-primary btn-block hidden" type="button" onclick="confirmLoadedBackup()">✓ بله، همین فایل است — ورود</button>
+            <button id="btnCancelLoad" class="btn btn-ghost btn-block hidden" type="button" onclick="cancelLoadedBackup()">انصراف از این فایل</button>
+          </div>
+        </div>
+        <div class="backup-status" id="gateStatus">
+          هنوز فایلی انتخاب نشده. پس از ورود، با دکمه «ذخیره پشتیبان» همان یک فایل همیشه به‌روز می‌شود.
+          قبل از بستن برنامه نیز پشتیبان خودکار پیشنهاد می‌شود.
+        </div>
+        <input type="file" id="fileLoad" accept="application/json,.json" class="hidden" onchange="onFilePicked(event)" />
+      </div>
     </div>
   </div>
-  <div class="setup-card">
-    <div class="title">بازیکن ۲</div>
-    <input type="text" id="name2" placeholder="اسم بازیکن ۲" value="بازیکن ۲">
-    <div class="gender-row">
-      <button class="gender-btn" data-player="1" data-gender="girl">دختر</button>
-      <button class="gender-btn selected-boy" data-player="1" data-gender="boy">پسر</button>
-    </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><img src="icon-tariq.svg" alt="طریق" /></div>
+        <div>
+          <h1>سامانه طریق</h1>
+          <p>پایا · پایگاه دانش‌آموزی</p>
+        </div>
+      </div>
+
+      <div class="nav-label">اصلی</div>
+      <button class="nav-item active" data-page="dashboard"><span class="icon">📊</span> داشبورد</button>
+
+      <div class="nav-label">نیروی انسانی</div>
+      <button class="nav-item" data-page="members"><span class="icon">👥</span> اعضا</button>
+      <button class="nav-item" data-page="bases"><span class="icon">🏫</span> پایگاه‌ها</button>
+
+      <div class="nav-label">فعالیت‌ها</div>
+      <button class="nav-item" data-page="programs"><span class="icon">📅</span> برنامه‌ها</button>
+      <button class="nav-item" data-page="meetings"><span class="icon">🗣️</span> جلسه‌ها</button>
+
+      <div class="nav-label">منابع</div>
+      <button class="nav-item" data-page="assets"><span class="icon">📦</span> اموال</button>
+      <button class="nav-item" data-page="finance"><span class="icon">💰</span> دخل و خرج</button>
+
+      <div class="nav-label">سایر</div>
+      <button class="nav-item" data-page="reports"><span class="icon">📄</span> گزارش‌ها</button>
+      <button class="nav-item" data-page="settings"><span class="icon">⚙️</span> تنظیمات و پشتیبان</button>
+
+      <div class="sidebar-footer">
+        پشتیبان یک‌فایلی · ذخیره محلی<br />
+        <span id="sideBackupHint">فایل پشتیبان تنظیم نشده</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="notice">
+        <strong>سامانه طریق (پایا)</strong> —
+        نیروی انسانی، برنامه‌ها، جلسه‌ها، اموال، دخل‌وخرج و گزارش یکپارچه.
+        داده در مرورگر ذخیره می‌شود و با <b>یک فایل JSON</b> بین دستگاه‌ها منتقل می‌گردد.
+      </div>
+
+      <section class="page active" id="page-dashboard">
+        <div class="topbar">
+          <div>
+            <h2>داشبورد عملیاتی</h2>
+            <div class="sub">خلاصه وضعیت پایگاه دانش‌آموزی بسیج</div>
+          </div>
+          <div class="top-actions">
+            <button class="btn btn-primary" onclick="saveBackupNow()">💾 ذخیره پشتیبان</button>
+            <button class="btn btn-ghost" onclick="go('reports')">گزارش فرماندهی</button>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat blue"><div class="label">اعضا</div><div class="value" id="st-members">0</div><div class="delta">نیروی انسانی</div></div>
+          <div class="stat"><div class="label">پایگاه‌ها</div><div class="value" id="st-bases">0</div><div class="delta">واحدها</div></div>
+          <div class="stat orange"><div class="label">برنامه + جلسه</div><div class="value" id="st-events">0</div><div class="delta">فعالیت‌ها</div></div>
+          <div class="stat green"><div class="label">موجودی صندوق</div><div class="value" id="st-balance">۰</div><div class="delta">ریال</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="label">اموال</div><div class="value" id="st-assets">0</div><div class="delta">اقلام</div></div>
+          <div class="stat green"><div class="label">مجموع دخل</div><div class="value" id="st-income">۰</div><div class="delta">کل درآمد</div></div>
+          <div class="stat red"><div class="label">مجموع خرج</div><div class="value" id="st-expense">۰</div><div class="delta">کل هزینه</div></div>
+          <div class="stat"><div class="label">اعضای فعال</div><div class="value" id="st-active">0</div><div class="delta">وضعیت فعال</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><h3>آخرین دخل و خرج</h3></div>
+            <table><thead><tr><th>شرح</th><th>نوع</th><th>مبلغ</th><th>تاریخ</th></tr></thead><tbody id="dash-finance"></tbody></table>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>جلسات و برنامه‌های نزدیک</h3></div>
+            <table><thead><tr><th>عنوان</th><th>نوع</th><th>تاریخ</th></tr></thead><tbody id="dash-events"></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-members">
+        <div class="topbar">
+          <div><h2>نیروی انسانی</h2><div class="sub">اعضای پایگاه دانش‌آموزی</div></div>
+          <div class="top-actions"><button class="btn btn-primary" onclick="showForm('member')">+ عضو جدید</button></div>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="q-member" placeholder="جستجو نام، کد ملی، مدرسه..." oninput="renderMembers()" />
+          <select id="f-member-base" onchange="renderMembers()"><option value="">همه پایگاه‌ها</option></select>
+          <select id="f-member-status" onchange="renderMembers()">
+            <option value="">همه وضعیت‌ها</option><option value="فعال">فعال</option><option value="غیرفعال">غیرفعال</option>
+          </select>
+        </div>
+        <div class="card" id="form-member" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3 id="title-member">عضو جدید</h3></div>
+          <form onsubmit="saveMember(event)">
+            <input type="hidden" id="member-id" />
+            <div class="form-grid">
+              <div class="form-row"><label>نام و نام خانوادگی</label><input id="m-name" required /></div>
+              <div class="form-row"><label>کد ملی</label><input id="m-nid" maxlength="10" /></div>
+              <div class="form-row"><label>موبایل</label><input id="m-phone" /></div>
+              <div class="form-row"><label>مدرسه / مقطع</label><input id="m-school" /></div>
+              <div class="form-row"><label>پایگاه</label><select id="m-base" required></select></div>
+              <div class="form-row"><label>سمت</label><input id="m-role" /></div>
+              <div class="form-row"><label>وضعیت</label><select id="m-status"><option>فعال</option><option>غیرفعال</option></select></div>
+              <div class="form-row"><label>پایه تحصیلی</label><input id="m-grade" /></div>
+              <div class="form-row full"><label>توضیحات</label><textarea id="m-note" rows="2"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('member')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>نام</th><th>کد ملی</th><th>مدرسه</th><th>پایه</th><th>پایگاه</th><th>سمت</th><th>وضعیت</th><th></th></tr></thead>
+          <tbody id="tb-members"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-bases">
+        <div class="topbar">
+          <div><h2>پایگاه‌ها</h2><div class="sub">واحدهای پایگاه دانش‌آموزی</div></div>
+          <div class="top-actions"><button class="btn btn-primary" onclick="showForm('base')">+ پایگاه جدید</button></div>
+        </div>
+        <div class="card" id="form-base" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3 id="title-base">پایگاه جدید</h3></div>
+          <form onsubmit="saveBase(event)">
+            <input type="hidden" id="base-id" />
+            <div class="form-grid">
+              <div class="form-row"><label>نام پایگاه</label><input id="b-name" required /></div>
+              <div class="form-row"><label>منطقه / ناحیه</label><input id="b-area" /></div>
+              <div class="form-row"><label>مسئول</label><input id="b-manager" /></div>
+              <div class="form-row"><label>تلفن</label><input id="b-phone" /></div>
+              <div class="form-row"><label>وضعیت</label><select id="b-status"><option>فعال</option><option>غیرفعال</option></select></div>
+              <div class="form-row full"><label>آدرس</label><input id="b-address" /></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('base')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>نام</th><th>منطقه</th><th>مسئول</th><th>تلفن</th><th>اعضا</th><th>وضعیت</th><th></th></tr></thead>
+          <tbody id="tb-bases"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-programs">
+        <div class="topbar">
+          <div><h2>برنامه‌ها</h2><div class="sub">فرهنگی، آموزشی، خدماتی، عملیاتی</div></div>
+          <div class="top-actions"><button class="btn btn-primary" onclick="showForm('program')">+ برنامه جدید</button></div>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="q-program" placeholder="جستجو عنوان..." oninput="renderPrograms()" />
+          <select id="f-program-type" onchange="renderPrograms()">
+            <option value="">همه انواع</option>
+            <option>فرهنگی</option><option>آموزشی</option><option>خدماتی</option><option>عملیاتی</option><option>ورزشی</option>
+          </select>
+        </div>
+        <div class="card" id="form-program" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3>برنامه جدید</h3></div>
+          <form onsubmit="saveProgram(event)">
+            <div class="form-grid">
+              <div class="form-row"><label>عنوان</label><input id="p-title" required /></div>
+              <div class="form-row"><label>تاریخ</label><input id="p-date" type="date" required /></div>
+              <div class="form-row"><label>پایگاه</label><select id="p-base" required></select></div>
+              <div class="form-row"><label>نوع</label>
+                <select id="p-type"><option>فرهنگی</option><option>آموزشی</option><option>خدماتی</option><option>عملیاتی</option><option>ورزشی</option></select>
+              </div>
+              <div class="form-row"><label>مسئول اجرا</label><input id="p-owner" /></div>
+              <div class="form-row"><label>وضعیت</label>
+                <select id="p-status"><option>برنامه‌ریزی</option><option>در حال اجرا</option><option>انجام‌شده</option><option>لغو</option></select>
+              </div>
+              <div class="form-row full"><label>توضیحات</label><textarea id="p-note" rows="2"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('program')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>عنوان</th><th>تاریخ</th><th>نوع</th><th>پایگاه</th><th>مسئول</th><th>وضعیت</th><th></th></tr></thead>
+          <tbody id="tb-programs"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-meetings">
+        <div class="topbar">
+          <div><h2>جلسه‌ها</h2><div class="sub">شورا، هماهنگی، مصوبات</div></div>
+          <div class="top-actions"><button class="btn btn-primary" onclick="showForm('meeting')">+ جلسه جدید</button></div>
+        </div>
+        <div class="card" id="form-meeting" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3>جلسه جدید</h3></div>
+          <form onsubmit="saveMeeting(event)">
+            <div class="form-grid">
+              <div class="form-row"><label>عنوان جلسه</label><input id="mt-title" required /></div>
+              <div class="form-row"><label>تاریخ</label><input id="mt-date" type="date" required /></div>
+              <div class="form-row"><label>ساعت</label><input id="mt-time" type="time" /></div>
+              <div class="form-row"><label>پایگاه</label><select id="mt-base" required></select></div>
+              <div class="form-row"><label>نوع جلسه</label>
+                <select id="mt-type"><option>شورای پایگاه</option><option>هماهنگی</option><option>آموزشی</option><option>ارزیابی</option><option>سایر</option></select>
+              </div>
+              <div class="form-row"><label>محل</label><input id="mt-place" /></div>
+              <div class="form-row full"><label>حاضرین</label><input id="mt-attendees" placeholder="با ویرگول جدا کنید" /></div>
+              <div class="form-row full"><label>مصوبات / خلاصه</label><textarea id="mt-minutes" rows="3"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('meeting')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>عنوان</th><th>تاریخ</th><th>ساعت</th><th>نوع</th><th>پایگاه</th><th>محل</th><th></th></tr></thead>
+          <tbody id="tb-meetings"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-assets">
+        <div class="topbar">
+          <div><h2>اموال</h2><div class="sub">تجهیزات و اموال پایگاه</div></div>
+          <div class="top-actions"><button class="btn btn-primary" onclick="showForm('asset')">+ قلم اموال</button></div>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="q-asset" placeholder="جستجو نام یا کد..." oninput="renderAssets()" />
+          <select id="f-asset-status" onchange="renderAssets()">
+            <option value="">همه وضعیت‌ها</option>
+            <option>سالم</option><option>نیاز به تعمیر</option><option>اسقاط</option><option>امانت</option>
+          </select>
+        </div>
+        <div class="card" id="form-asset" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3 id="title-asset">قلم اموال جدید</h3></div>
+          <form onsubmit="saveAsset(event)">
+            <input type="hidden" id="asset-id" />
+            <div class="form-grid">
+              <div class="form-row"><label>نام کالا</label><input id="as-name" required /></div>
+              <div class="form-row"><label>کد اموال</label><input id="as-code" /></div>
+              <div class="form-row"><label>دسته</label>
+                <select id="as-cat">
+                  <option>تجهیزات اداری</option><option>لوازم فرهنگی</option><option>ورزشی</option>
+                  <option>رایانه و الکترونیک</option><option>اثاثیه</option><option>سایر</option>
+                </select>
+              </div>
+              <div class="form-row"><label>تعداد</label><input id="as-qty" type="number" min="1" value="1" required /></div>
+              <div class="form-row"><label>پایگاه</label><select id="as-base" required></select></div>
+              <div class="form-row"><label>وضعیت</label>
+                <select id="as-status"><option>سالم</option><option>نیاز به تعمیر</option><option>اسقاط</option><option>امانت</option></select>
+              </div>
+              <div class="form-row"><label>محل نگهداری</label><input id="as-place" /></div>
+              <div class="form-row"><label>تاریخ ثبت</label><input id="as-date" type="date" /></div>
+              <div class="form-row full"><label>توضیحات</label><textarea id="as-note" rows="2"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('asset')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>نام</th><th>کد</th><th>دسته</th><th>تعداد</th><th>پایگاه</th><th>وضعیت</th><th>محل</th><th></th></tr></thead>
+          <tbody id="tb-assets"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-finance">
+        <div class="topbar">
+          <div><h2>دخل و خرج</h2><div class="sub">صندوق پایگاه</div></div>
+          <div class="top-actions">
+            <button class="btn btn-primary" onclick="showFinanceForm('دخل')">+ دخل</button>
+            <button class="btn btn-danger" onclick="showFinanceForm('خرج')">+ خرج</button>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat green"><div class="label">مجموع دخل</div><div class="value" id="fin-income">۰</div><div class="delta">ریال</div></div>
+          <div class="stat red"><div class="label">مجموع خرج</div><div class="value" id="fin-expense">۰</div><div class="delta">ریال</div></div>
+          <div class="stat blue"><div class="label">موجودی</div><div class="value" id="fin-balance">۰</div><div class="delta">دخل − خرج</div></div>
+          <div class="stat"><div class="label">تراکنش‌ها</div><div class="value" id="fin-count">0</div><div class="delta">ثبت‌شده</div></div>
+        </div>
+        <div class="search-bar">
+          <input type="search" id="q-finance" placeholder="جستجو شرح..." oninput="renderFinance()" />
+          <select id="f-finance-type" onchange="renderFinance()">
+            <option value="">همه</option><option value="دخل">دخل</option><option value="خرج">خرج</option>
+          </select>
+          <select id="f-finance-base" onchange="renderFinance()"><option value="">همه پایگاه‌ها</option></select>
+        </div>
+        <div class="card" id="form-finance" style="display:none;margin-bottom:12px;">
+          <div class="card-header"><h3 id="title-finance">ثبت تراکنش</h3></div>
+          <form onsubmit="saveFinance(event)">
+            <input type="hidden" id="fin-id" /><input type="hidden" id="fin-kind" />
+            <div class="form-grid">
+              <div class="form-row"><label>شرح</label><input id="f-desc" required /></div>
+              <div class="form-row"><label>مبلغ (ریال)</label><input id="f-amount" type="number" min="0" step="1000" required /></div>
+              <div class="form-row"><label>تاریخ</label><input id="f-date" type="date" required /></div>
+              <div class="form-row"><label>پایگاه</label><select id="f-base" required></select></div>
+              <div class="form-row"><label>دسته</label>
+                <select id="f-cat">
+                  <option>کمک مردمی</option><option>بودجه رسمی</option><option>فروش</option>
+                  <option>خرید تجهیزات</option><option>پذیرایی</option><option>حمل‌ونقل</option>
+                  <option>چاپ و تبلیغات</option><option>تعمیرات</option><option>سایر</option>
+                </select>
+              </div>
+              <div class="form-row"><label>طرف حساب</label><input id="f-person" /></div>
+              <div class="form-row full"><label>توضیحات</label><textarea id="f-note" rows="2"></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">ذخیره</button>
+              <button type="button" class="btn btn-ghost" onclick="hideForm('finance')">انصراف</button>
+            </div>
+          </form>
+        </div>
+        <div class="card"><table>
+          <thead><tr><th>تاریخ</th><th>نوع</th><th>شرح</th><th>دسته</th><th>پایگاه</th><th>مبلغ</th><th></th></tr></thead>
+          <tbody id="tb-finance"></tbody>
+        </table></div>
+      </section>
+
+      <section class="page" id="page-reports">
+        <div class="topbar">
+          <div><h2>گزارش فرماندهی</h2><div class="sub">خلاصه آماده برای بازدید لحظه‌ای</div></div>
+          <div class="top-actions">
+            <button class="btn btn-primary" onclick="printReport()">چاپ / PDF</button>
+            <button class="btn btn-ghost" onclick="saveBackupNow()">خروجی JSON کامل</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><h3>اعضا بر اساس پایگاه</h3></div><div id="rep-members"></div></div>
+          <div class="card"><div class="card-header"><h3>دخل و خرج بر اساس دسته</h3></div><div id="rep-finance"></div></div>
+        </div>
+        <div class="grid-2" style="margin-top:12px">
+          <div class="card"><div class="card-header"><h3>اموال بر اساس وضعیت</h3></div><div id="rep-assets"></div></div>
+          <div class="card"><div class="card-header"><h3>برنامه و جلسه</h3></div><div id="rep-events"></div></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <div class="card-header"><h3>خروجی متنی کامل</h3></div>
+          <pre id="rep-text" style="white-space:pre-wrap;font-size:12px;color:var(--muted);background:var(--panel2);padding:12px;border-radius:10px;max-height:340px;overflow:auto"></pre>
+        </div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="topbar">
+          <div><h2>تنظیمات و پشتیبان</h2><div class="sub">یک فایل، همه اطلاعات، همه دستگاه‌ها</div></div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-header"><h3>پشتیبان یک‌فایلی</h3></div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9">
+            فایل ثابت: <b>tariq-paya-backup.json</b><br>
+            هر بار ذخیره، همین فایل بازنویسی/دانلود می‌شود — نیازی به چهل فایل جدا نیست.
+            روی ویندوز (کروم/اج) و اندروید با دانلود/آپلود همان فایل کار می‌کند.
+          </p>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveBackupNow()">💾 ذخیره / به‌روزرسانی پشتیبان</button>
+            <label class="btn btn-ghost" style="cursor:pointer">
+              📂 بارگذاری پشتیبان
+              <input type="file" accept="application/json,.json" hidden onchange="importData(event)" />
+            </label>
+            <button class="btn btn-danger" onclick="resetData()">بازگشت به داده نمونه</button>
+          </div>
+          <div class="backup-status" id="settingsBackupStatus" style="margin-top:12px">—</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>نکته نصب</h3></div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.9">
+            روی موبایل می‌توانید از منوی مرورگر «افزودن به صفحه اصلی» را بزنید تا مثل اپ نصب شود.
+            داده در همان دستگاه می‌ماند؛ برای انتقال فقط همان یک JSON را کپی کنید.
+          </p>
+        </div>
+      </section>
+    </main>
   </div>
-  <button class="btn-main" id="startBtn" style="margin-top:10px">شروع بازی</button>
-</div>
-<div id="game-screen" class="screen">
-  <div class="game-header">
-    <div class="brand">منچ رابطه‌ای</div>
-    <div class="badge">DUO / 100</div>
-  </div>
-  <div class="players">
-    <div class="player-card active" id="card0">
-      <div class="name" id="displayName0">بازیکن ۱</div>
-      <div class="gender-tag" id="displayGender0">دختر</div>
-      <div class="pos" id="pos0">۰</div>
-      <div class="pos-label">خونه</div>
-    </div>
-    <div class="player-card" id="card1">
-      <div class="name" id="displayName1">بازیکن ۲</div>
-      <div class="gender-tag" id="displayGender1">پسر</div>
-      <div class="pos" id="pos1">۰</div>
-      <div class="pos-label">خونه</div>
-    </div>
-  </div>
-  <div class="board-wrap"><div class="board" id="board"></div></div>
-  <div class="dice-section">
-    <div class="turn-text" id="turnText">نوبت بازیکن ۱</div>
-    <div class="dice" id="dice">⚄</div>
-    <button class="btn-dice" id="rollBtn">پرتاب تاس</button>
-  </div>
-  <div class="note">خانه‌های ✦ = چالش ویژه<br>هر قدم مهره حدود ۰.۸ ثانیه طول می‌کشد</div>
-</div>
-<div class="overlay" id="challengeOverlay">
-  <div class="scroll" id="scroll">
-    <div class="tag">CHALLENGE // خانه ویژه</div>
-    <h2 id="challengeTitle">حکم این خونه</h2>
-    <div class="gender-box girl"><div class="label">برای دختر</div><div class="text" id="girlText"></div></div>
-    <div class="gender-box boy"><div class="label">برای پسر</div><div class="text" id="boyText"></div></div>
-    <button class="btn-close" id="closeBtn">چالش انجام شد</button>
-  </div>
-</div>
-<div class="overlay" id="winnerOverlay">
-  <div class="winner-box">
-    <div class="emoji">✦</div>
-    <h1 id="winnerTitle">برنده شدی</h1>
-    <p>مسیر ۱۰۰ خانه کامل شد.<br>لحظه‌های خوبی با هم ساختید.</p>
-    <button class="btn-restart" id="restartBtn">بازی دوباره</button>
-  </div>
-</div>
-<script>
-const DICE_FACES=["","⚀","⚁","⚂","⚃","⚄","⚅"];
-const STEP_MS=800;
 
-let audioCtx=null;
-function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
-function beep(freq,dur,type,vol){try{ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type||"square";o.frequency.value=freq;g.gain.value=vol||0.08;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur)}catch(e){}}
-function sfxDiceTick(){beep(170+Math.random()*140,0.035,"square",0.055)}
-function sfxDiceStop(){beep(300,0.14,"triangle",0.11)}
-function sfxStep(){beep(400,0.06,"square",0.045)}
-function sfxChallenge(){beep(520,0.09,"sine",0.07);setTimeout(()=>beep(700,0.11,"sine",0.06),100)}
-function sfxWin(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,0.16,"sine",0.08),i*130))}
+  <div class="toast" id="toast"></div>
 
-const LICENSE_CODE="0970185839";
-function normalizeDigits(str){const p="۰۱۲۳۴۵۶۷۸۹",a="٠١٢٣٤٥٦٧٨٩";return str.replace(/[۰-۹]/g,d=>p.indexOf(d)).replace(/[٠-٩]/g,d=>a.indexOf(d)).replace(/\D/g,"")}
-document.getElementById("licenseBtn").addEventListener("click",checkLicense);
-document.getElementById("licenseInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkLicense()});
-function checkLicense(){ensureAudio();const input=document.getElementById("licenseInput"),err=document.getElementById("licenseError"),val=normalizeDigits(input.value.trim());if(val===LICENSE_CODE){err.textContent="";document.getElementById("license-screen").classList.remove("active");document.getElementById("setup-screen").classList.add("active")}else{input.classList.add("error");err.textContent="کد لایسنس نادرست است";setTimeout(()=>input.classList.remove("error"),400)}}
+  <script>
+    const KEY = "tariq_paya_v2";
+    const BACKUP_NAME = "tariq-paya-backup.json";
+    let pendingBackup = null;
+    let backupHandle = null; // File System Access API (Chrome/Edge desktop)
+    let lastBackupAt = null;
+    let dirty = false;
 
-const genders=["girl","boy"];
-document.querySelectorAll(".gender-btn").forEach(btn=>{btn.addEventListener("click",()=>{const p=+btn.dataset.player,g=btn.dataset.gender;genders[p]=g;document.querySelectorAll(`.gender-btn[data-player="${p}"]`).forEach(b=>b.classList.remove("selected-girl","selected-boy"));btn.classList.add(g==="girl"?"selected-girl":"selected-boy")})});
-document.getElementById("startBtn").addEventListener("click",()=>{ensureAudio();const n1=document.getElementById("name1").value.trim()||"بازیکن ۱",n2=document.getElementById("name2").value.trim()||"بازیکن ۲";names[0]=n1;names[1]=n2;document.getElementById("displayName0").textContent=n1;document.getElementById("displayName1").textContent=n2;document.getElementById("displayGender0").textContent=genders[0]==="girl"?"دختر":"پسر";document.getElementById("displayGender1").textContent=genders[1]==="girl"?"دختر":"پسر";document.getElementById("setup-screen").classList.remove("active");document.getElementById("game-screen").classList.add("active");render()});
+    const seed = {
+      meta: { app: "tariq-paya", version: 2 },
+      bases: [
+        { id: "b1", name: "پایگاه دانش‌آموزی شهید بهشتی", area: "ناحیه ۱", manager: "علی رضایی", phone: "021-12345678", status: "فعال", address: "خیابان اصلی" },
+        { id: "b2", name: "پایگاه دانش‌آموزی امام حسین (ع)", area: "ناحیه ۲", manager: "محمد کریمی", phone: "021-87654321", status: "فعال", address: "میدان مرکزی" }
+      ],
+      members: [
+        { id: "m1", name: "حسین احمدی", nid: "0012345678", phone: "09121234567", school: "دبیرستان شهید رجایی", grade: "یازدهم", baseId: "b1", status: "فعال", role: "مسئول فرهنگی", note: "" },
+        { id: "m2", name: "رضا موسوی", nid: "0011112222", phone: "09129876543", school: "هنرستان فنی", grade: "دهم", baseId: "b1", status: "فعال", role: "عضو", note: "" },
+        { id: "m3", name: "سعید نوری", nid: "0033334444", phone: "09351234567", school: "دبیرستان نمونه", grade: "دوازدهم", baseId: "b2", status: "غیرفعال", role: "عضو", note: "" }
+      ],
+      programs: [
+        { id: "p1", title: "اردوی یک‌روزه فرهنگی", date: "2026-09-28", baseId: "b1", type: "فرهنگی", owner: "حسین احمدی", status: "برنامه‌ریزی", note: "" },
+        { id: "p2", title: "کارگاه مهارت‌آموزی", date: "2026-10-05", baseId: "b2", type: "آموزشی", owner: "محمد کریمی", status: "برنامه‌ریزی", note: "" }
+      ],
+      meetings: [
+        { id: "mt1", title: "جلسه شورای پایگاه مهرماه", date: "2026-09-24", time: "16:00", baseId: "b1", type: "شورای پایگاه", place: "سالن پایگاه", attendees: "علی رضایی، حسین احمدی", minutes: "بررسی برنامه‌های ماه" }
+      ],
+      assets: [
+        { id: "as1", name: "لپ‌تاپ اداری", code: "A-101", cat: "رایانه و الکترونیک", qty: 2, baseId: "b1", status: "سالم", place: "اتاق مسئول", date: "2025-03-01", note: "" },
+        { id: "as2", name: "بلندگو پرتابل", code: "A-205", cat: "لوازم فرهنگی", qty: 1, baseId: "b1", status: "نیاز به تعمیر", place: "انبار", date: "2024-11-12", note: "" }
+      ],
+      finance: [
+        { id: "f1", kind: "دخل", desc: "کمک مردمی شهریور", amount: 5000000, date: "2026-09-10", baseId: "b1", cat: "کمک مردمی", person: "خیرین", note: "" },
+        { id: "f2", kind: "خرج", desc: "خرید لوازم برنامه", amount: 1200000, date: "2026-09-12", baseId: "b1", cat: "خرید تجهیزات", person: "", note: "" },
+        { id: "f3", kind: "دخل", desc: "بودجه رسمی ناحیه", amount: 8000000, date: "2026-09-01", baseId: "b2", cat: "بودجه رسمی", person: "ناحیه", note: "" }
+      ]
+    };
 
-const girlChallenges={soft:["۳۰ ثانیه فقط به پسر نگاه کن و لبخند بزن، بعد یه تعریف کوچیک ازش بگو.","دستت رو آروم روی شونه یا بازوی پسر بذار و ۱۵ ثانیه نگه دار.","یه بوسه خیلی ملایم روی گونه یا پیشانی پسر بزن.","دستات رو دور کمر پسر ببر و یه بوسه آروم روی لبش بزن.","دستت رو زیر لباس پسر روی سینه‌ش یا شکمش ببر و آروم نوازش کن."],medium:["یکی از دکمه‌های لباس پسر رو باز کن و جای لخت‌شده رو ببوس.","با دستت قسمت جنسی پسر رو از روی لباس نوازش کن تا سفت بشه.","لباس بالای تنت رو دربیار و بذار پسر سینه‌هات رو ببینه و نوازش کنه.","روی پای پسر بشین و بدنت رو بهش بمال (هنوز با لباس).","با زبونت گردن و ترقوه پسر رو لیس بزن و آروم گاز بگیر."],hard:["با دست یا دهنت آلت پسر رو تا لب‌لبه ارگاسم ببر، ولی نذار تموم کنه.","لباس زیرت رو دربیار و بذار پسر با انگشت یا زبون تحریک‌ت کنه.","روی پسر سوار شو (بدون دخول) و بدنت رو به آلتش بمال.","بذار پسر کنترل کامل بدنت رو برای ۲ دقیقه به دست بگیره (با رضایت).","آلت پسر رو بین سینه‌هات بذار و بالا پایین ببر."],final:["رابطه کامل. هر پوزیشنی که دوست داری انتخاب کن و بذار پسر گایت کنه.","بذار پسر از پشت یا روبرو کامل داخل بشه و با سرعتی که دوست داره پیش بره.","خودت رو کامل در اختیار پسر بذار و بذار هر جور که می‌خواد تموم کنه."]};
-const boyChallenges={soft:["۳۰ ثانیه فقط به دختر نگاه کن و لبخند بزن، بعد یه تعریف کوچیک ازش بگو.","دستت رو آروم روی شونه یا بازوی دختر بذار و ۱۵ ثانیه نگه دار.","یه بوسه خیلی ملایم روی گونه یا پیشانی دختر بزن.","دستات رو دور کمر دختر ببر و یه بوسه آروم روی لبش بزن.","دستت رو زیر لباس دختر روی سینه‌ش یا شکمش ببر و آروم نوازش کن."],medium:["یکی از دکمه‌های لباس دختر رو باز کن و جای لخت‌شده رو ببوس.","با دستت سینه‌های دختر رو از روی لباس نوازش کن و آروم فشار بده.","لباس بالای تنت رو دربیار و بذار دختر بدنت رو لمس کنه.","دختر رو بغل کن و بدنت رو محکم بهش بچسبون.","با زبونت گردن و گوش دختر رو لیس بزن و آروم گاز بگیر."],hard:["با دست یا دهنت قسمت جنسی دختر رو تا لب‌لبه ارگاسم ببر، ولی نذار تموم کنه.","لباس زیر دختر رو دربیار و با انگشت یا زبون تحریک‌ش کن.","دختر رو روی خودت بنشون (بدون دخول) و بدنش رو به آلتت بمال.","برای ۲ دقیقه کنترل کامل بدن دختر رو به دست بگیر (با رضایت).","آلتت رو بین ران‌های دختر بذار و آروم بمال."],final:["رابطه کامل. هر پوزیشنی که دوست داری انتخاب کن و دختر رو کامل بگای.","از پشت یا روبرو کامل داخل شو و با سرعتی که هر دو دوست دارید پیش برو.","دختر رو کامل در اختیار بگیر و هر جور که می‌خوای تموم کن."]};
-function getLevel(h){if(h<=30)return"soft";if(h<=60)return"medium";if(h<=90)return"hard";return"final"}
-function pickRandom(a){return a[Math.floor(Math.random()*a.length)]}
+    let data = emptyData();
 
-let names=["بازیکن ۱","بازیکن ۲"],pos=[0,0],current=0,busy=false,pendingWinner=false;
-const boardEl=document.getElementById("board");
-for(let i=1;i<=100;i++){const c=document.createElement("div");c.className="cell"+(i%10===0?" special":"");c.id="cell-"+i;c.textContent=i;boardEl.appendChild(c)}
+    function emptyData() {
+      return { meta: { app: "tariq-paya", version: 2 }, bases: [], members: [], programs: [], meetings: [], assets: [], finance: [] };
+    }
+    function normalize(p) {
+      return {
+        meta: Object.assign({ app: "tariq-paya", version: 2 }, p.meta || {}),
+        bases: p.bases || [],
+        members: p.members || [],
+        programs: p.programs || [],
+        meetings: p.meetings || [],
+        assets: p.assets || [],
+        finance: p.finance || []
+      };
+    }
+    function persistLocal() {
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+      dirty = true;
+      updateBackupHints();
+    }
+    function loadLocal() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) return normalize(JSON.parse(raw));
+      } catch (e) {}
+      return null;
+    }
+    function uid(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+    function baseName(id) { const b = data.bases.find(x => x.id === id); return b ? b.name : "—"; }
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg; el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2400);
+    }
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+    }
+    function money(n) { return (Number(n) || 0).toLocaleString("fa-IR"); }
+    function today() { return new Date().toISOString().slice(0, 10); }
 
-function render(){
-  document.querySelectorAll(".token").forEach(t=>t.remove());
-  pos.forEach((p,i)=>{
-    if(p>0){const cell=document.getElementById("cell-"+p);if(cell){const t=document.createElement("div");t.className="token p"+i;cell.appendChild(t)}}
-    document.getElementById("pos"+i).textContent=p;
-    document.getElementById("card"+i).classList.toggle("active",i===current&&!busy);
-  });
-  document.getElementById("turnText").textContent="نوبت "+names[current];
-}
+    /* ===== Backup workflow ===== */
+    function packPayload() {
+      data.meta = { app: "tariq-paya", version: 2, updatedAt: new Date().toISOString(), counts: {
+        bases: data.bases.length, members: data.members.length, programs: data.programs.length,
+        meetings: data.meetings.length, assets: data.assets.length, finance: data.finance.length
+      }};
+      return JSON.stringify(data, null, 2);
+    }
+    function summarize(obj) {
+      const n = normalize(obj);
+      return {
+        bases: n.bases.length, members: n.members.length, programs: n.programs.length,
+        meetings: n.meetings.length, assets: n.assets.length, finance: n.finance.length,
+        updatedAt: (n.meta && n.meta.updatedAt) || "—"
+      };
+    }
+    function pickBackupLoad() {
+      document.getElementById("fileLoad").click();
+    }
+    function onFilePicked(e) {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (!parsed || (!parsed.members && !parsed.bases && !parsed.finance)) throw new Error("invalid");
+          pendingBackup = normalize(parsed);
+          const s = summarize(pendingBackup);
+          const box = document.getElementById("gatePreview");
+          box.classList.remove("hidden");
+          box.innerHTML = `<b>آیا همین فایل پشتیبان است؟</b><br>
+            نام فایل: ${esc(file.name)}<br>
+            پایگاه: ${s.bases} · عضو: ${s.members} · برنامه: ${s.programs} · جلسه: ${s.meetings}<br>
+            اموال: ${s.assets} · تراکنش مالی: ${s.finance}<br>
+            آخرین به‌روزرسانی: ${esc(s.updatedAt)}`;
+          document.getElementById("btnConfirmLoad").classList.remove("hidden");
+          document.getElementById("btnCancelLoad").classList.remove("hidden");
+          document.getElementById("gateStatus").innerHTML = "فایل خوانده شد. اگر درست است تأیید کنید.";
+        } catch {
+          alert("فایل پشتیبان نامعتبر است. فقط JSON سامانه طریق/پایا پذیرفته می‌شود.");
+        }
+      };
+      reader.readAsText(file);
+    }
+    function confirmLoadedBackup() {
+      if (!pendingBackup) return;
+      data = pendingBackup;
+      pendingBackup = null;
+      persistLocal();
+      dirty = false;
+      lastBackupAt = new Date().toISOString();
+      enterApp();
+      toast("پشتیبان بارگذاری شد");
+    }
+    function cancelLoadedBackup() {
+      pendingBackup = null;
+      document.getElementById("gatePreview").classList.add("hidden");
+      document.getElementById("btnConfirmLoad").classList.add("hidden");
+      document.getElementById("btnCancelLoad").classList.add("hidden");
+      document.getElementById("gateStatus").textContent = "بارگذاری لغو شد. می‌توانید فایل دیگری انتخاب کنید یا شروع تازه بزنید.";
+    }
+    function startFresh() {
+      const local = loadLocal();
+      if (local && (local.members.length || local.bases.length)) {
+        if (!confirm("داده قبلی در این مرورگر هست. با شروع تازه جایگزین شود؟")) return;
+      }
+      data = JSON.parse(JSON.stringify(seed));
+      persistLocal();
+      dirty = false;
+      enterApp();
+      toast("شروع تازه با داده نمونه");
+    }
+    async function saveBackupNow() {
+      const text = packPayload();
+      persistLocal();
+      // Prefer File System Access API (Windows Chrome/Edge) — rewrite SAME file
+      try {
+        if (window.showSaveFilePicker) {
+          if (!backupHandle) {
+            backupHandle = await window.showSaveFilePicker({
+              suggestedName: BACKUP_NAME,
+              types: [{ description: "JSON", accept: { "application/json": [".json"] } }]
+            });
+          }
+          const writable = await backupHandle.createWritable();
+          await writable.write(text);
+          await writable.close();
+          lastBackupAt = new Date().toISOString();
+          dirty = false;
+          updateBackupHints();
+          toast("پشتیبان در همان فایل به‌روز شد");
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") return;
+        // fall through to download
+      }
+      // Universal fallback (Android + all browsers): download one file (overwrite by user choosing same name)
+      const blob = new Blob([text], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = BACKUP_NAME;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      lastBackupAt = new Date().toISOString();
+      dirty = false;
+      updateBackupHints();
+      toast("فایل پشتیبان دانلود شد — همان نام را نگه دارید");
+    }
+    function updateBackupHints() {
+      const t = lastBackupAt ? new Date(lastBackupAt).toLocaleString("fa-IR") : "هنوز ذخیره نشده";
+      const msg = `آخرین پشتیبان: ${t}` + (dirty ? " · تغییرات ذخیره‌نشده در فایل" : " · هم‌گام");
+      const side = document.getElementById("sideBackupHint");
+      const st = document.getElementById("settingsBackupStatus");
+      if (side) side.textContent = msg;
+      if (st) st.innerHTML = msg + `<br>نام فایل ثابت: <b>${BACKUP_NAME}</b>`;
+    }
+    function enterApp() {
+      document.getElementById("gate").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      refreshAll();
+      updateBackupHints();
+    }
 
-function placeTokenAt(player,house){
-  document.querySelectorAll(".token.p"+player).forEach(t=>t.remove());
-  if(house<=0)return;
-  const cell=document.getElementById("cell-"+house);
-  if(!cell)return;
-  const t=document.createElement("div");
-  t.className="token p"+player+" bounce";
-  cell.appendChild(t);
-  cell.classList.add("flash");
-  setTimeout(()=>cell.classList.remove("flash"),180);
-}
+    // Auto-backup prompt on leave
+    window.addEventListener("beforeunload", (e) => {
+      if (!dirty) return;
+      e.preventDefault();
+      e.returnValue = "تغییرات ذخیره نشده ممکن است از دست برود. ابتدا پشتیبان بگیرید.";
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden" && dirty) {
+        try { persistLocal(); } catch (e) {}
+      }
+    });
 
-async function moveStepByStep(player,steps){
-  for(let i=0;i<steps;i++){
-    if(pos[player]>=100)break;
-    pos[player]++;
-    placeTokenAt(player,pos[player]);
-    document.getElementById("pos"+player).textContent=pos[player];
-    sfxStep();
-    await new Promise(r=>setTimeout(r,STEP_MS));
-  }
-}
+    /* Nav */
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      btn.addEventListener("click", () => go(btn.dataset.page));
+    });
+    function go(page) {
+      document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+      document.querySelectorAll(".page").forEach(p => p.classList.toggle("active", p.id === "page-" + page));
+      if (page === "reports") renderReports();
+      fillBaseSelects();
+    }
+    function showForm(name) {
+      const el = document.getElementById("form-" + name);
+      if (!el) return;
+      el.style.display = "block";
+      fillBaseSelects();
+      if (name === "member") { document.getElementById("title-member").textContent = "عضو جدید"; document.getElementById("member-id").value = ""; el.querySelector("form").reset(); }
+      if (name === "base") { document.getElementById("title-base").textContent = "پایگاه جدید"; document.getElementById("base-id").value = ""; el.querySelector("form").reset(); }
+      if (name === "asset") {
+        document.getElementById("title-asset").textContent = "قلم اموال جدید";
+        document.getElementById("asset-id").value = ""; el.querySelector("form").reset();
+        document.getElementById("as-date").value = today(); document.getElementById("as-qty").value = 1;
+      }
+      if (name === "program") { el.querySelector("form").reset(); document.getElementById("p-date").value = today(); }
+      if (name === "meeting") { el.querySelector("form").reset(); document.getElementById("mt-date").value = today(); }
+    }
+    function hideForm(name) {
+      const el = document.getElementById("form-" + name);
+      if (el) el.style.display = "none";
+    }
+    function fillBaseSelects() {
+      const opts = data.bases.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join("");
+      ["m-base","p-base","mt-base","as-base","f-base"].forEach(id => {
+        const el = document.getElementById(id); if (!el) return;
+        const cur = el.value; el.innerHTML = opts; if (cur) el.value = cur;
+      });
+      ["f-member-base","f-finance-base"].forEach(id => {
+        const el = document.getElementById(id); if (!el) return;
+        const cur = el.value;
+        el.innerHTML = `<option value="">همه پایگاه‌ها</option>` + opts;
+        el.value = cur;
+      });
+    }
 
-async function rollDice(){
-  if(busy)return;
-  busy=true;ensureAudio();
-  const dice=document.getElementById("dice"),btn=document.getElementById("rollBtn");
-  btn.disabled=true;
-  dice.classList.remove("shake");void dice.offsetWidth;dice.classList.add("shake");
+    function financeSums() {
+      let income = 0, expense = 0;
+      data.finance.forEach(f => { if (f.kind === "دخل") income += Number(f.amount)||0; else expense += Number(f.amount)||0; });
+      return { income, expense, balance: income - expense };
+    }
 
-  let ticks=0;
-  const tickTimer=setInterval(()=>{
-    const n=Math.floor(Math.random()*6)+1;
-    dice.textContent=DICE_FACES[n];
-    sfxDiceTick();
-    ticks++;
-    if(ticks>=14)clearInterval(tickTimer);
-  },58);
+    function renderDashboard() {
+      const s = financeSums();
+      document.getElementById("st-members").textContent = data.members.length;
+      document.getElementById("st-bases").textContent = data.bases.length;
+      document.getElementById("st-events").textContent = data.programs.length + data.meetings.length;
+      document.getElementById("st-balance").textContent = money(s.balance);
+      document.getElementById("st-assets").textContent = data.assets.length;
+      document.getElementById("st-income").textContent = money(s.income);
+      document.getElementById("st-expense").textContent = money(s.expense);
+      document.getElementById("st-active").textContent = data.members.filter(m => m.status === "فعال").length;
 
-  await new Promise(r=>setTimeout(r,880));
+      const fin = [...data.finance].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);
+      document.getElementById("dash-finance").innerHTML = fin.map(f => `
+        <tr><td>${esc(f.desc)}</td>
+        <td><span class="badge ${f.kind==="دخل"?"badge-in":"badge-out"}">${esc(f.kind)}</span></td>
+        <td class="${f.kind==="دخل"?"money-pos":"money-neg"}">${f.kind==="دخل"?"+":"−"}${money(f.amount)}</td>
+        <td>${esc(f.date)}</td></tr>`).join("") || `<tr><td colspan="4" class="empty">تراکنشی نیست</td></tr>`;
 
-  const value=Math.floor(Math.random()*6)+1;
-  dice.textContent=DICE_FACES[value];
-  sfxDiceStop();
+      const events = [
+        ...data.programs.map(p => ({ title: p.title, type: "برنامه · "+p.type, date: p.date })),
+        ...data.meetings.map(m => ({ title: m.title, type: "جلسه · "+m.type, date: m.date }))
+      ].sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);
+      document.getElementById("dash-events").innerHTML = events.map(e => `
+        <tr><td>${esc(e.title)}</td><td><span class="badge badge-info">${esc(e.type)}</span></td><td>${esc(e.date)}</td></tr>
+      `).join("") || `<tr><td colspan="3" class="empty">موردی نیست</td></tr>`;
+    }
 
-  const remaining=100-pos[current];
-  const steps=Math.min(value,remaining);
-  if(steps>0)await moveStepByStep(current,steps);
+    function saveMember(e) {
+      e.preventDefault();
+      const id = document.getElementById("member-id").value;
+      const row = {
+        id: id || uid("m"),
+        name: document.getElementById("m-name").value.trim(),
+        nid: document.getElementById("m-nid").value.trim(),
+        phone: document.getElementById("m-phone").value.trim(),
+        school: document.getElementById("m-school").value.trim(),
+        grade: document.getElementById("m-grade").value.trim(),
+        baseId: document.getElementById("m-base").value,
+        role: document.getElementById("m-role").value.trim(),
+        status: document.getElementById("m-status").value,
+        note: document.getElementById("m-note").value.trim()
+      };
+      if (id) { const i = data.members.findIndex(x=>x.id===id); if (i>=0) data.members[i]=row; }
+      else data.members.push(row);
+      persistLocal(); hideForm("member"); refreshAll(); toast("عضو ذخیره شد");
+    }
+    function editMember(id) {
+      const m = data.members.find(x=>x.id===id); if (!m) return;
+      fillBaseSelects();
+      document.getElementById("form-member").style.display = "block";
+      document.getElementById("title-member").textContent = "ویرایش عضو";
+      document.getElementById("member-id").value = m.id;
+      document.getElementById("m-name").value = m.name;
+      document.getElementById("m-nid").value = m.nid||"";
+      document.getElementById("m-phone").value = m.phone||"";
+      document.getElementById("m-school").value = m.school||"";
+      document.getElementById("m-grade").value = m.grade||"";
+      document.getElementById("m-base").value = m.baseId;
+      document.getElementById("m-role").value = m.role||"";
+      document.getElementById("m-status").value = m.status;
+      document.getElementById("m-note").value = m.note||"";
+    }
+    function deleteMember(id) {
+      if (!confirm("حذف شود؟")) return;
+      data.members = data.members.filter(x=>x.id!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function renderMembers() {
+      const q = (document.getElementById("q-member").value||"").trim();
+      const fb = document.getElementById("f-member-base").value;
+      const fs = document.getElementById("f-member-status").value;
+      let list = data.members;
+      if (q) list = list.filter(m => [m.name,m.nid,m.phone,m.school,m.role,m.grade].join(" ").includes(q));
+      if (fb) list = list.filter(m => m.baseId===fb);
+      if (fs) list = list.filter(m => m.status===fs);
+      document.getElementById("tb-members").innerHTML = list.map(m => `
+        <tr>
+          <td>${esc(m.name)}</td><td>${esc(m.nid||"—")}</td><td>${esc(m.school||"—")}</td>
+          <td>${esc(m.grade||"—")}</td><td>${esc(baseName(m.baseId))}</td><td>${esc(m.role||"—")}</td>
+          <td><span class="badge ${m.status==="فعال"?"badge-ok":"badge-off"}">${esc(m.status)}</span></td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="editMember('${m.id}')">ویرایش</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}')">حذف</button>
+          </td>
+        </tr>`).join("") || `<tr><td colspan="8" class="empty">عضوی یافت نشد</td></tr>`;
+    }
 
-  if(pos[current]===100){pendingWinner=true;sfxChallenge();showChallenge(100);return}
-  if(pos[current]%10===0){sfxChallenge();showChallenge(pos[current]);return}
+    function saveBase(e) {
+      e.preventDefault();
+      const id = document.getElementById("base-id").value;
+      const row = {
+        id: id || uid("b"),
+        name: document.getElementById("b-name").value.trim(),
+        area: document.getElementById("b-area").value.trim(),
+        manager: document.getElementById("b-manager").value.trim(),
+        phone: document.getElementById("b-phone").value.trim(),
+        status: document.getElementById("b-status").value,
+        address: document.getElementById("b-address").value.trim()
+      };
+      if (id) { const i = data.bases.findIndex(x=>x.id===id); if (i>=0) data.bases[i]=row; }
+      else data.bases.push(row);
+      persistLocal(); hideForm("base"); refreshAll(); toast("پایگاه ذخیره شد");
+    }
+    function editBase(id) {
+      const b = data.bases.find(x=>x.id===id); if (!b) return;
+      document.getElementById("form-base").style.display = "block";
+      document.getElementById("title-base").textContent = "ویرایش پایگاه";
+      document.getElementById("base-id").value = b.id;
+      document.getElementById("b-name").value = b.name;
+      document.getElementById("b-area").value = b.area||"";
+      document.getElementById("b-manager").value = b.manager||"";
+      document.getElementById("b-phone").value = b.phone||"";
+      document.getElementById("b-status").value = b.status;
+      document.getElementById("b-address").value = b.address||"";
+    }
+    function deleteBase(id) {
+      if (data.members.some(m=>m.baseId===id)) { alert("ابتدا اعضا را جابه‌جا کنید."); return; }
+      if (!confirm("حذف شود؟")) return;
+      data.bases = data.bases.filter(x=>x.id!==id);
+      data.programs = data.programs.filter(x=>x.baseId!==id);
+      data.meetings = data.meetings.filter(x=>x.baseId!==id);
+      data.assets = data.assets.filter(x=>x.baseId!==id);
+      data.finance = data.finance.filter(x=>x.baseId!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function renderBases() {
+      document.getElementById("tb-bases").innerHTML = data.bases.map(b => {
+        const c = data.members.filter(m=>m.baseId===b.id).length;
+        return `<tr>
+          <td>${esc(b.name)}</td><td>${esc(b.area||"—")}</td><td>${esc(b.manager||"—")}</td>
+          <td>${esc(b.phone||"—")}</td><td>${c}</td>
+          <td><span class="badge ${b.status==="فعال"?"badge-ok":"badge-off"}">${esc(b.status)}</span></td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="editBase('${b.id}')">ویرایش</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteBase('${b.id}')">حذف</button>
+          </td></tr>`;
+      }).join("") || `<tr><td colspan="7" class="empty">پایگاهی نیست</td></tr>`;
+    }
 
-  current=1-current;busy=false;btn.disabled=false;render();
-}
+    function saveProgram(e) {
+      e.preventDefault();
+      data.programs.push({
+        id: uid("p"), title: document.getElementById("p-title").value.trim(),
+        date: document.getElementById("p-date").value, baseId: document.getElementById("p-base").value,
+        type: document.getElementById("p-type").value, owner: document.getElementById("p-owner").value.trim(),
+        status: document.getElementById("p-status").value, note: document.getElementById("p-note").value.trim()
+      });
+      persistLocal(); hideForm("program"); refreshAll(); toast("برنامه ذخیره شد");
+    }
+    function deleteProgram(id) {
+      if (!confirm("حذف شود؟")) return;
+      data.programs = data.programs.filter(x=>x.id!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function renderPrograms() {
+      const q = (document.getElementById("q-program").value||"").trim();
+      const t = document.getElementById("f-program-type").value;
+      let list = [...data.programs].sort((a,b)=>a.date.localeCompare(b.date));
+      if (q) list = list.filter(p => p.title.includes(q) || (p.owner||"").includes(q));
+      if (t) list = list.filter(p => p.type===t);
+      document.getElementById("tb-programs").innerHTML = list.map(p => `
+        <tr>
+          <td>${esc(p.title)}</td><td>${esc(p.date)}</td>
+          <td><span class="badge badge-warn">${esc(p.type)}</span></td>
+          <td>${esc(baseName(p.baseId))}</td><td>${esc(p.owner||"—")}</td>
+          <td><span class="badge badge-info">${esc(p.status)}</span></td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteProgram('${p.id}')">حذف</button></td>
+        </tr>`).join("") || `<tr><td colspan="7" class="empty">برنامه‌ای نیست</td></tr>`;
+    }
 
-function showChallenge(house){
-  const level=getLevel(house);
-  document.getElementById("challengeTitle").textContent="حکم خونه "+house;
-  document.getElementById("girlText").textContent=pickRandom(girlChallenges[level]);
-  document.getElementById("boyText").textContent=pickRandom(boyChallenges[level]);
-  const o=document.getElementById("challengeOverlay"),s=document.getElementById("scroll");
-  o.classList.add("show");s.classList.remove("open");void s.offsetWidth;s.classList.add("open");
-}
-function closeChallenge(){
-  document.getElementById("challengeOverlay").classList.remove("show");
-  if(pendingWinner){sfxWin();showWinner(current);pendingWinner=false;return}
-  current=1-current;busy=false;document.getElementById("rollBtn").disabled=false;render();
-}
-function showWinner(player){
-  document.getElementById("winnerTitle").textContent=names[player]+" برنده شد";
-  document.getElementById("winnerOverlay").classList.add("show");busy=false;
-}
-function restart(){
-  pos=[0,0];current=0;busy=false;pendingWinner=false;
-  document.getElementById("winnerOverlay").classList.remove("show");
-  document.getElementById("challengeOverlay").classList.remove("show");
-  document.getElementById("dice").textContent="⚄";
-  document.getElementById("rollBtn").disabled=false;
-  document.getElementById("game-screen").classList.remove("active");
-  document.getElementById("setup-screen").classList.add("active");
-}
-document.getElementById("rollBtn").addEventListener("click",rollDice);
-document.getElementById("closeBtn").addEventListener("click",closeChallenge);
-document.getElementById("restartBtn").addEventListener("click",restart);
-if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
-</script>
+    function saveMeeting(e) {
+      e.preventDefault();
+      data.meetings.push({
+        id: uid("mt"), title: document.getElementById("mt-title").value.trim(),
+        date: document.getElementById("mt-date").value, time: document.getElementById("mt-time").value,
+        baseId: document.getElementById("mt-base").value, type: document.getElementById("mt-type").value,
+        place: document.getElementById("mt-place").value.trim(),
+        attendees: document.getElementById("mt-attendees").value.trim(),
+        minutes: document.getElementById("mt-minutes").value.trim()
+      });
+      persistLocal(); hideForm("meeting"); refreshAll(); toast("جلسه ذخیره شد");
+    }
+    function deleteMeeting(id) {
+      if (!confirm("حذف شود؟")) return;
+      data.meetings = data.meetings.filter(x=>x.id!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function viewMeeting(id) {
+      const m = data.meetings.find(x=>x.id===id); if (!m) return;
+      alert(`عنوان: ${m.title}\nتاریخ: ${m.date} ${m.time||""}\nنوع: ${m.type}\nمحل: ${m.place||"—"}\nحاضرین: ${m.attendees||"—"}\n\nمصوبات:\n${m.minutes||"—"}`);
+    }
+    function renderMeetings() {
+      const list = [...data.meetings].sort((a,b)=>a.date.localeCompare(b.date));
+      document.getElementById("tb-meetings").innerHTML = list.map(m => `
+        <tr>
+          <td>${esc(m.title)}</td><td>${esc(m.date)}</td><td>${esc(m.time||"—")}</td>
+          <td><span class="badge badge-purple">${esc(m.type)}</span></td>
+          <td>${esc(baseName(m.baseId))}</td><td>${esc(m.place||"—")}</td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="viewMeeting('${m.id}')">جزئیات</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteMeeting('${m.id}')">حذف</button>
+          </td>
+        </tr>`).join("") || `<tr><td colspan="7" class="empty">جلسه‌ای نیست</td></tr>`;
+    }
+
+    function saveAsset(e) {
+      e.preventDefault();
+      const id = document.getElementById("asset-id").value;
+      const row = {
+        id: id || uid("as"),
+        name: document.getElementById("as-name").value.trim(),
+        code: document.getElementById("as-code").value.trim(),
+        cat: document.getElementById("as-cat").value,
+        qty: Number(document.getElementById("as-qty").value)||1,
+        baseId: document.getElementById("as-base").value,
+        status: document.getElementById("as-status").value,
+        place: document.getElementById("as-place").value.trim(),
+        date: document.getElementById("as-date").value || today(),
+        note: document.getElementById("as-note").value.trim()
+      };
+      if (id) { const i = data.assets.findIndex(x=>x.id===id); if (i>=0) data.assets[i]=row; }
+      else data.assets.push(row);
+      persistLocal(); hideForm("asset"); refreshAll(); toast("اموال ذخیره شد");
+    }
+    function editAsset(id) {
+      const a = data.assets.find(x=>x.id===id); if (!a) return;
+      fillBaseSelects();
+      document.getElementById("form-asset").style.display = "block";
+      document.getElementById("title-asset").textContent = "ویرایش اموال";
+      document.getElementById("asset-id").value = a.id;
+      document.getElementById("as-name").value = a.name;
+      document.getElementById("as-code").value = a.code||"";
+      document.getElementById("as-cat").value = a.cat;
+      document.getElementById("as-qty").value = a.qty;
+      document.getElementById("as-base").value = a.baseId;
+      document.getElementById("as-status").value = a.status;
+      document.getElementById("as-place").value = a.place||"";
+      document.getElementById("as-date").value = a.date||"";
+      document.getElementById("as-note").value = a.note||"";
+    }
+    function deleteAsset(id) {
+      if (!confirm("حذف شود؟")) return;
+      data.assets = data.assets.filter(x=>x.id!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function renderAssets() {
+      const q = (document.getElementById("q-asset").value||"").trim();
+      const st = document.getElementById("f-asset-status").value;
+      let list = data.assets;
+      if (q) list = list.filter(a => [a.name,a.code,a.cat,a.place].join(" ").includes(q));
+      if (st) list = list.filter(a => a.status===st);
+      const sc = s => s==="سالم"?"badge-ok":s==="نیاز به تعمیر"?"badge-warn":s==="امانت"?"badge-info":"badge-off";
+      document.getElementById("tb-assets").innerHTML = list.map(a => `
+        <tr>
+          <td>${esc(a.name)}</td><td>${esc(a.code||"—")}</td><td>${esc(a.cat)}</td><td>${a.qty}</td>
+          <td>${esc(baseName(a.baseId))}</td>
+          <td><span class="badge ${sc(a.status)}">${esc(a.status)}</span></td>
+          <td>${esc(a.place||"—")}</td>
+          <td>
+            <button class="btn btn-ghost btn-sm" onclick="editAsset('${a.id}')">ویرایش</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAsset('${a.id}')">حذف</button>
+          </td>
+        </tr>`).join("") || `<tr><td colspan="8" class="empty">اموالی نیست</td></tr>`;
+    }
+
+    function showFinanceForm(kind) {
+      fillBaseSelects();
+      document.getElementById("form-finance").style.display = "block";
+      document.getElementById("title-finance").textContent = kind==="دخل" ? "ثبت دخل" : "ثبت خرج";
+      document.getElementById("fin-id").value = "";
+      document.getElementById("fin-kind").value = kind;
+      document.getElementById("f-desc").value = "";
+      document.getElementById("f-amount").value = "";
+      document.getElementById("f-date").value = today();
+      document.getElementById("f-person").value = "";
+      document.getElementById("f-note").value = "";
+    }
+    function saveFinance(e) {
+      e.preventDefault();
+      const kind = document.getElementById("fin-kind").value || "خرج";
+      data.finance.push({
+        id: uid("f"), kind,
+        desc: document.getElementById("f-desc").value.trim(),
+        amount: Number(document.getElementById("f-amount").value)||0,
+        date: document.getElementById("f-date").value,
+        baseId: document.getElementById("f-base").value,
+        cat: document.getElementById("f-cat").value,
+        person: document.getElementById("f-person").value.trim(),
+        note: document.getElementById("f-note").value.trim()
+      });
+      persistLocal(); hideForm("finance"); refreshAll(); toast(kind + " ثبت شد");
+    }
+    function deleteFinance(id) {
+      if (!confirm("حذف شود؟")) return;
+      data.finance = data.finance.filter(x=>x.id!==id);
+      persistLocal(); refreshAll(); toast("حذف شد");
+    }
+    function renderFinance() {
+      const s = financeSums();
+      document.getElementById("fin-income").textContent = money(s.income);
+      document.getElementById("fin-expense").textContent = money(s.expense);
+      document.getElementById("fin-balance").textContent = money(s.balance);
+      document.getElementById("fin-count").textContent = data.finance.length;
+      const q = (document.getElementById("q-finance").value||"").trim();
+      const t = document.getElementById("f-finance-type").value;
+      const b = document.getElementById("f-finance-base").value;
+      let list = [...data.finance].sort((a,c)=>c.date.localeCompare(a.date));
+      if (q) list = list.filter(f => [f.desc,f.cat,f.person].join(" ").includes(q));
+      if (t) list = list.filter(f => f.kind===t);
+      if (b) list = list.filter(f => f.baseId===b);
+      document.getElementById("tb-finance").innerHTML = list.map(f => `
+        <tr>
+          <td>${esc(f.date)}</td>
+          <td><span class="badge ${f.kind==="دخل"?"badge-in":"badge-out"}">${esc(f.kind)}</span></td>
+          <td>${esc(f.desc)}</td><td>${esc(f.cat)}</td><td>${esc(baseName(f.baseId))}</td>
+          <td class="${f.kind==="دخل"?"money-pos":"money-neg"}">${f.kind==="دخل"?"+":"−"}${money(f.amount)}</td>
+          <td><button class="btn btn-danger btn-sm" onclick="deleteFinance('${f.id}')">حذف</button></td>
+        </tr>`).join("") || `<tr><td colspan="7" class="empty">تراکنشی نیست</td></tr>`;
+    }
+
+    function countBy(arr, keyFn) {
+      const map = {}; arr.forEach(x => { const k = keyFn(x); map[k]=(map[k]||0)+1; }); return map;
+    }
+    function tableFromMap(map, c1, c2) {
+      const entries = Object.entries(map);
+      if (!entries.length) return `<div class="empty">داده‌ای نیست</div>`;
+      return `<table><thead><tr><th>${c1}</th><th>${c2}</th></tr></thead><tbody>
+        ${entries.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")}
+      </tbody></table>`;
+    }
+    function renderReports() {
+      const byBase = countBy(data.members, m => baseName(m.baseId));
+      document.getElementById("rep-members").innerHTML = tableFromMap(byBase, "پایگاه", "تعداد");
+      const byCat = {};
+      data.finance.forEach(f => { const k = f.kind+" · "+f.cat; byCat[k]=(byCat[k]||0)+(Number(f.amount)||0); });
+      const finEntries = Object.entries(byCat);
+      document.getElementById("rep-finance").innerHTML = finEntries.length
+        ? `<table><thead><tr><th>دسته</th><th>مبلغ</th></tr></thead><tbody>
+            ${finEntries.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${money(v)}</td></tr>`).join("")}
+           </tbody></table>` : `<div class="empty">داده‌ای نیست</div>`;
+      document.getElementById("rep-assets").innerHTML = tableFromMap(countBy(data.assets, a=>a.status), "وضعیت", "تعداد");
+      document.getElementById("rep-events").innerHTML = `<table><thead><tr><th>مورد</th><th>تعداد</th></tr></thead><tbody>
+        <tr><td>برنامه‌ها</td><td>${data.programs.length}</td></tr>
+        <tr><td>جلسه‌ها</td><td>${data.meetings.length}</td></tr>
+      </tbody></table>`;
+      const s = financeSums();
+      document.getElementById("rep-text").textContent =
+`گزارش سامانه طریق (پایا) — ${new Date().toLocaleString("fa-IR")}
+════════════════════════════════
+پایگاه‌ها: ${data.bases.length}
+اعضا: ${data.members.length} (فعال: ${data.members.filter(m=>m.status==="فعال").length})
+برنامه‌ها: ${data.programs.length}
+جلسه‌ها: ${data.meetings.length}
+اموال: ${data.assets.length}
+
+دخل و خرج
+─────────
+مجموع دخل: ${money(s.income)} ریال
+مجموع خرج: ${money(s.expense)} ریال
+موجودی: ${money(s.balance)} ریال
+
+توزیع اعضا:
+${Object.entries(byBase).map(([k,v])=>"• "+k+": "+v).join("\\n") || "—"}`;
+    }
+    function printReport() {
+      renderReports();
+      const w = window.open("", "_blank");
+      w.document.write(`<html dir="rtl"><head><title>گزارش طریق</title>
+        <style>body{font-family:Tahoma,sans-serif;padding:24px;line-height:1.7} pre{white-space:pre-wrap}</style>
+        </head><body><h2>گزارش سامانه طریق (پایا)</h2><pre>${document.getElementById("rep-text").textContent}</pre></body></html>`);
+      w.document.close(); w.print();
+    }
+
+    function importData(e) {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const p = normalize(JSON.parse(reader.result));
+          if (!confirm(`بارگذاری این پشتیبان؟\nعضو: ${p.members.length} · پایگاه: ${p.bases.length} · مالی: ${p.finance.length}`)) return;
+          data = p; persistLocal(); dirty = false; lastBackupAt = new Date().toISOString();
+          refreshAll(); updateBackupHints(); toast("بازیابی انجام شد");
+        } catch { alert("فایل نامعتبر است"); }
+      };
+      reader.readAsText(file); e.target.value = "";
+    }
+    function resetData() {
+      if (!confirm("همه داده‌ها به نمونه اولیه برگردد؟")) return;
+      data = JSON.parse(JSON.stringify(seed));
+      persistLocal(); refreshAll(); toast("بازنشانی شد");
+    }
+    function refreshAll() {
+      fillBaseSelects();
+      renderDashboard(); renderMembers(); renderBases();
+      renderPrograms(); renderMeetings(); renderAssets(); renderFinance();
+    }
+
+    // PWA SW
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+    }
+  </script>
 </body>
 </html>
